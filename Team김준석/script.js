@@ -218,6 +218,8 @@ async function MakeAllMarkers() {
   createMedicalMarkers();
 }
 
+// var markerimglocal = document.getElementById("myImage"); // 이미지 요소를 선택합니다.
+
 var markerImageSrc =
   "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png"; // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
 
@@ -314,14 +316,14 @@ function createCareMarker(position, image, name, content1, content2, content3) {
 
 async function createCareDataMarkers() {
   for (var i = 0; i < Care_positions.length; i++) {
-    var imageSize = new kakao.maps.Size(22, 26),
+    var imageSize = new kakao.maps.Size(30, 30),
       imageOptions = {
         spriteOrigin: new kakao.maps.Point(10, 0),
-        spriteSize: new kakao.maps.Size(36, 98),
+        spriteSize: new kakao.maps.Size(10, 10),
       };
 
     var markerImage = createMarkerImage(
-        markerImageSrc,
+        "logos1/logo.png",
         imageSize,
         imageOptions
       ),
