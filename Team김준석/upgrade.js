@@ -1,4 +1,4 @@
-var urls = [
+var Caring_urls = [
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1002/1/1000/",
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1004/1/1000/",
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1003/1/1000/",
@@ -14,9 +14,11 @@ var mapContainer = document.getElementById("map"), // 지도를 표시할 div
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-var apipositions = [];
-var apinames = [];
-var apiseviceCLs = [];
+var Caring_positions = [];
+var Caring_names = [];
+var Caring_seviceCLs = [];
+var Caring_addresses = [];
+var Caring_siteurls = [];
 
 async function loadXMLData(apiurl) {
   var url = apiurl;
@@ -24,15 +26,18 @@ async function loadXMLData(apiurl) {
   const xmlString = await response.text();
   const parser = new DOMParser();
   const xmlData = parser.parseFromString(xmlString, "text/xml");
-  return processXMLData(xmlData);
+  processXMLData(xmlData);
 }
+
+var geocoder = new kakao.maps.services.Geocoder();
 
 function processXMLData(xmlData) {
   var xValueElements = xmlData.getElementsByTagName("X_CRDNT_VALUE");
   var yValueElements = xmlData.getElementsByTagName("Y_CRDNT_VALUE");
+  var BASSADRESElements = xmlData.getElementsByTagName("BASS_ADRES");
   var FCLTYNMElements = xmlData.getElementsByTagName("FCLTY_NM");
   var SVCCLNMElements = xmlData.getElementsByTagName("SVC_CL_NM");
-  var apipositions = [];
+  // var SITEURLElements = xmlData.getElementsByTagName("SITE_URL"); 사이트 url 받는 게 잘 안됨. 저 태그네임이 아니거나 url이 없거나
 
   for (var i = 0; i < xValueElements.length; i++) {
     var xValue = parseFloat(xValueElements[i].textContent);
@@ -41,24 +46,25 @@ function processXMLData(xmlData) {
     var apiposition = new kakao.maps.LatLng(yValue, xValue);
     var apiname = FCLTYNMElements[i].textContent;
     var apiseviceCL = SVCCLNMElements[i].textContent;
+    var apiBASSADRE = BASSADRESElements[i].textContent;
+    // var apisiteurl = SITEURLElements[i].textContent;
 
-    apipositions.push(apiposition);
-    apinames.push(apiname);
-    apiseviceCLs.push(apiseviceCL);
+    Caring_positions.push(apiposition);
+    Caring_names.push(apiname);
+    Caring_seviceCLs.push(apiseviceCL);
+    Caring_addresses.push(apiBASSADRE);
+    // Caring_siteurls.push(apisiteurl);
   }
-
-  return apipositions;
 }
 
 async function loadALLXMLData() {
-  for (var i = 0; i < urls.length; i++) {
-    var tempPositions = await loadXMLData(urls[i]);
-    console.log(urls[i]);
-    apipositions = apipositions.concat(tempPositions);
+  for (var i = 0; i < Caring_urls.length; i++) {
+    await loadXMLData(Caring_urls[i]);
+    console.log(Caring_urls[i]);
   }
 }
 
-createSeoulDataMarkers();
+createCaringDataMarkers();
 
 // 편의점 마커가 표시될 좌표 배열입니다
 var storePositions = [
@@ -99,11 +105,42 @@ function createMarkerImage(src, size, options) {
   return markerImage;
 }
 
+var lastInfowindow;
+
 // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-function createMarker(position, image) {
+function createMarker(position, image, name, serviceCL, address) {
   var marker = new kakao.maps.Marker({
     position: position,
     image: image,
+  });
+  marker.setClickable(true);
+
+  // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+  var iwContent =
+    '<div style="padding:5px;"><b>' +
+    name +
+    "</b><br/>" +
+    serviceCL +
+    "</b><br/>" +
+    address +
+    "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+  // 인포윈도우를 생성합니다
+  var infowindow = new kakao.maps.InfoWindow({
+    content: iwContent,
+    removable: true,
+  });
+
+  // 마커에 클릭이벤트를 등록합니다
+  kakao.maps.event.addListener(marker, "click", function () {
+    // 마커 위에 인포윈도우를 표시합니다
+    console.log("click");
+    if (lastInfowindow) {
+      lastInfowindow.close();
+    }
+
+    infowindow.open(map, marker);
+    lastInfowindow = infowindow;
   });
 
   return marker;
@@ -111,9 +148,9 @@ function createMarker(position, image) {
 
 loadALLXMLData();
 
-async function createSeoulDataMarkers() {
+async function createCaringDataMarkers() {
   await loadALLXMLData();
-  for (var i = 0; i < apipositions.length; i++) {
+  for (var i = 0; i < Caring_positions.length; i++) {
     var imageSize = new kakao.maps.Size(22, 26),
       imageOptions = {
         spriteOrigin: new kakao.maps.Point(10, 0),
@@ -125,7 +162,13 @@ async function createSeoulDataMarkers() {
         imageSize,
         imageOptions
       ),
-      marker = createMarker(apipositions[i], markerImage);
+      marker = createMarker(
+        Caring_positions[i],
+        markerImage,
+        Caring_names[i],
+        Caring_seviceCLs[i],
+        Caring_addresses[i]
+      );
 
     coffeeMarkers.push(marker);
   }
@@ -154,7 +197,13 @@ function createStoreMarkers() {
         imageSize,
         imageOptions
       ),
-      marker = createMarker(storePositions[i], markerImage);
+      marker = createMarker(
+        storePositions[i],
+        markerImage,
+        Caring_names[i],
+        Caring_seviceCLs[i],
+        Caring_addresses[i]
+      );
 
     // 생성된 마커를 편의점 마커 배열에 추가합니다
     storeMarkers.push(marker);
@@ -183,7 +232,13 @@ function createCarparkMarkers() {
         imageSize,
         imageOptions
       ),
-      marker = createMarker(carparkPositions[i], markerImage);
+      marker = createMarker(
+        carparkPositions[i],
+        markerImage,
+        Caring_names[i],
+        Caring_seviceCLs[i],
+        Caring_addresses[i]
+      );
 
     // 생성된 마커를 주차장 마커 배열에 추가합니다
     carparkMarkers.push(marker);
@@ -207,10 +262,10 @@ function changeMarker(type) {
   if (type === "coffee") {
     // 커피숍 카테고리를 선택된 스타일로 변경하고
     coffeeMenu.className = "menu_selected";
-    console.log(apipositions);
-    console.log(coffeeMarkers);
-    console.log(apinames);
-    console.log(apiseviceCLs);
+    console.log(Caring_positions);
+    console.log(Caring_names);
+    console.log(Caring_siteurls);
+    console.log(Caring_addresses);
 
     // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
     storeMenu.className = "";
