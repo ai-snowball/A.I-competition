@@ -6,6 +6,16 @@ var Caring_urls = [
   // "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/tbBabySisulBaseExt/1/1000/", //거점형야간보육어린이집정보, 좌표값이 없고 이름이나 서비스 종류 태그네임도 다름
 ];
 
+var Medical_urls = [
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/1/1000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/1001/2000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/2001/3000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/3001/4000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/4001/5000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/5001/6000/",
+  "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10074/6001/7000/",
+];
+
 var mapContainer = document.getElementById("map"), // 지도를 표시할 div
   mapOption = {
     center: new kakao.maps.LatLng(37.498004414546934, 127.02770621963765), // 지도의 중심좌표
@@ -20,18 +30,28 @@ var Caring_seviceCLs = [];
 var Caring_addresses = [];
 var Caring_siteurls = [];
 
-async function loadXMLData(apiurl) {
+var Medical_positions = [];
+var Medical_names = [];
+var Medical_ATDRCs = [];
+var Medical_addresses = [];
+var Medical_siteurls = [];
+
+async function loadXMLData(apiurl, type) {
   var url = apiurl;
   const response = await fetch(url);
   const xmlString = await response.text();
   const parser = new DOMParser();
   const xmlData = parser.parseFromString(xmlString, "text/xml");
-  processXMLData(xmlData);
+  if (type === "Caring") {
+    processCaringXMLData(xmlData);
+  } else if (type === "Medical") {
+    processMedicalXMLData(xmlData);
+  }
 }
 
 var geocoder = new kakao.maps.services.Geocoder();
 
-function processXMLData(xmlData) {
+function processCaringXMLData(xmlData) {
   var xValueElements = xmlData.getElementsByTagName("X_CRDNT_VALUE");
   var yValueElements = xmlData.getElementsByTagName("Y_CRDNT_VALUE");
   var BASSADRESElements = xmlData.getElementsByTagName("BASS_ADRES");
@@ -57,14 +77,51 @@ function processXMLData(xmlData) {
   }
 }
 
-async function loadALLXMLData() {
-  for (var i = 0; i < Caring_urls.length; i++) {
-    await loadXMLData(Caring_urls[i]);
-    console.log(Caring_urls[i]);
+function processMedicalXMLData(xmlData) {
+  var xValueElements = xmlData.getElementsByTagName("X_CRDNT_VALUE");
+  var yValueElements = xmlData.getElementsByTagName("Y_CRDNT_VALUE");
+  var BASSADRESElements = xmlData.getElementsByTagName("BASS_ADRES");
+  var nameElements = xmlData.getElementsByTagName("CLTUR_EVENT_ETC_NM");
+  var ATDRCElements = xmlData.getElementsByTagName("ATDRC_NM");
+  var siteURLElements = xmlData.getElementsByTagName("GUIDANCE_URL");
+
+  for (var i = 0; i < xValueElements.length; i++) {
+    var xValue = parseFloat(xValueElements[i].textContent);
+    var yValue = parseFloat(yValueElements[i].textContent);
+
+    var apiposition = new kakao.maps.LatLng(yValue, xValue);
+    var apiname = nameElements[i].textContent;
+    var apiATDRC = ATDRCElements[i].textContent;
+    var apiBASSADRE = BASSADRESElements[i].textContent;
+    var apisiteurl = siteURLElements[i].textContent;
+
+    Medical_positions.push(apiposition);
+    Medical_names.push(apiname);
+    Medical_ATDRCs.push(apiATDRC);
+    Medical_addresses.push(apiBASSADRE);
+    Medical_siteurls.push(apisiteurl);
   }
+  console.log("medical");
 }
 
-createCaringDataMarkers();
+async function loadALLXMLData() {
+  for (var i = 0; i < Caring_urls.length; i++) {
+    await loadXMLData(Caring_urls[i], "Caring");
+    console.log(Caring_urls[i]);
+  }
+  for (var i = 0; i < Medical_urls.length; i++) {
+    await loadXMLData(Medical_urls[i], "Medical");
+    console.log(Medical_urls[i]);
+  }
+}
+MakeAllMarkers();
+
+async function MakeAllMarkers() {
+  await loadALLXMLData();
+  createCaringDataMarkers();
+  createStoreMarkers();
+  createCarparkMarkers();
+}
 
 // 편의점 마커가 표시될 좌표 배열입니다
 var storePositions = [
@@ -77,27 +134,12 @@ var storePositions = [
   new kakao.maps.LatLng(37.49996818951873, 127.02943721562295),
 ];
 
-// 주차장 마커가 표시될 좌표 배열입니다
-var carparkPositions = [
-  new kakao.maps.LatLng(37.49966168796031, 127.03007039430118),
-  new kakao.maps.LatLng(37.499463762912974, 127.0288828824399),
-  new kakao.maps.LatLng(37.49896834100913, 127.02833986892401),
-  new kakao.maps.LatLng(37.49893267508434, 127.02673400572665),
-  new kakao.maps.LatLng(37.49872543597439, 127.02676785815386),
-  new kakao.maps.LatLng(37.49813096097184, 127.02591949495914),
-  new kakao.maps.LatLng(37.497680616783086, 127.02518427952202),
-];
-
 var markerImageSrc =
   "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png"; // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
 
 (coffeeMarkers = []), // 커피숍 마커 객체를 가지고 있을 배열입니다
   (storeMarkers = []), // 편의점 마커 객체를 가지고 있을 배열입니다
   (carparkMarkers = []); // 주차장 마커 객체를 가지고 있을 배열입니다
-
-// createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
-createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
-createCarparkMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
 
 // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
 function createMarkerImage(src, size, options) {
@@ -117,7 +159,7 @@ function createMarker(position, image, name, serviceCL, address) {
 
   // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
   var iwContent =
-    '<div style="padding:5px;"><b>' +
+    '<div style="padding:20px;"><b>' +
     name +
     "</b><br/>" +
     serviceCL +
@@ -146,10 +188,7 @@ function createMarker(position, image, name, serviceCL, address) {
   return marker;
 }
 
-loadALLXMLData();
-
 async function createCaringDataMarkers() {
-  await loadALLXMLData();
   for (var i = 0; i < Caring_positions.length; i++) {
     var imageSize = new kakao.maps.Size(22, 26),
       imageOptions = {
@@ -219,7 +258,7 @@ function setStoreMarkers(map) {
 
 // 주차장 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
 function createCarparkMarkers() {
-  for (var i = 0; i < carparkPositions.length; i++) {
+  for (var i = 0; i < Medical_positions.length; i++) {
     var imageSize = new kakao.maps.Size(22, 26),
       imageOptions = {
         spriteOrigin: new kakao.maps.Point(10, 72),
@@ -233,11 +272,11 @@ function createCarparkMarkers() {
         imageOptions
       ),
       marker = createMarker(
-        carparkPositions[i],
+        Medical_positions[i],
         markerImage,
-        Caring_names[i],
-        Caring_seviceCLs[i],
-        Caring_addresses[i]
+        Medical_names[i],
+        Medical_addresses[i],
+        Medical_siteurls[i]
       );
 
     // 생성된 마커를 주차장 마커 배열에 추가합니다
@@ -262,10 +301,6 @@ function changeMarker(type) {
   if (type === "coffee") {
     // 커피숍 카테고리를 선택된 스타일로 변경하고
     coffeeMenu.className = "menu_selected";
-    console.log(Caring_positions);
-    console.log(Caring_names);
-    console.log(Caring_siteurls);
-    console.log(Caring_addresses);
 
     // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
     storeMenu.className = "";
@@ -289,6 +324,10 @@ function changeMarker(type) {
     setCarparkMarkers(null);
   } else if (type === "carpark") {
     // 주차장 카테고리가 클릭됐을 때
+    console.log(Medical_positions);
+    console.log(Medical_names);
+    console.log(Medical_siteurls);
+    console.log(Medical_addresses);
 
     // 주차장 카테고리를 선택된 스타일로 변경하고
     coffeeMenu.className = "";
