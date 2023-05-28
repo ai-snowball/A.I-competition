@@ -14,45 +14,55 @@ const checkedItems = document.getElementById("checked-items");
 const checkedItemsData = new Map();
 
 button1.addEventListener("click", () => {
-  showChecklistItems(["Item 1", "Item 2", "Item 3"], ["image1.png", "image2.png", "image3.png"]);
+  showChecklistItems(["Item 1", "Item 2", "Item 3"]);
 });
 
 button2.addEventListener("click", () => {
-  showChecklistItems(["Item A", "Item B", "Item C"], ["imageA.png", "imageB.png", "imageC.png"]);
+  showChecklistItems(["Item A", "Item B", "Item C"]);
 });
 
 button3.addEventListener("click", () => {
-  showChecklistItems(["Task 1", "Task 2", "Task 3"], ["imageTask1.png", "imageTask2.png", "imageTask3.png"]);
+  showChecklistItems(["Task 1", "Task 2", "Task 3"]);
 });
 
 // Show the checklist items for Button 1 by default
-showChecklistItems(["Item A", "Item B", "Item C"], ["imageA.png", "imageB.png", "imageC.png"]);
+
+showChecklistItems(["Item A", "Item B", "Item C"]);
 checkAllItems();
-showChecklistItems(["Task 1", "Task 2", "Task 3"], ["imageTask1.png", "imageTask2.png", "imageTask3.png"]);
+showChecklistItems(["Task 1", "Task 2", "Task 3"]);
 checkAllItems();
-showChecklistItems(["Item 1", "Item 2", "Item 3"], ["image1.png", "image2.png", "image3.png"]);
+showChecklistItems(["Item 1", "Item 2", "Item 3"]);
 checkAllItems();
 
-function showChecklistItems(items, images) {
+function showChecklistItems(items) {
   // Clear existing items
   checklistItems.innerHTML = "";
 
   // Create new checklist items
-  items.forEach((item, index) => {
-    const image = document.createElement("img");
-    image.src = images[index];
-    image.alt = item;
+  items.forEach(item => {
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const label = document.createElement("label");
+    label.textContent = item;
 
     const listItem = document.createElement("div");
-    listItem.appendChild(image);
+    listItem.appendChild(checkbox);
+    listItem.appendChild(label);
 
     // Set the checkbox state based on the stored data
     if (checkedItemsData.has(item)) {
-      listItem.classList.add("checked");
+      checkbox.checked = true;
+    } else {
+      checkbox.checked = false;
     }
 
-    listItem.addEventListener("click", () => {
-      toggleCheckedItem(item, listItem);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        addCheckedItem(item);
+      } else {
+        removeCheckedItem(item);
+      }
     });
 
     checklistItems.appendChild(listItem);
@@ -60,16 +70,6 @@ function showChecklistItems(items, images) {
 
   // Show the checklist items
   checklistItems.classList.add("active");
-}
-
-function toggleCheckedItem(item, listItem) {
-  if (checkedItemsData.has(item)) {
-    removeCheckedItem(item);
-    listItem.classList.remove("checked");
-  } else {
-    addCheckedItem(item);
-    listItem.classList.add("checked");
-  }
 }
 
 function addCheckedItem(item) {
@@ -91,10 +91,10 @@ function removeCheckedItem(item) {
 
 // Function to check all checklist items
 function checkAllItems() {
-  const listItems = checklistItems.querySelectorAll("div");
-  listItems.forEach(listItem => {
-    const item = listItem.firstChild.alt;
-    listItem.classList.add("checked");
+  const checkboxes = checklistItems.querySelectorAll("input[type='checkbox']");
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = true;
+    const item = checkbox.nextSibling.textContent;
     addCheckedItem(item);
   });
 }
