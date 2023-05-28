@@ -22,31 +22,23 @@
 
   <nav class="mobile-nav">
     <ul>
-      <li><a href="#">메뉴 1</a></li>
-      <li><a href="#">메뉴 2</a></li>
-      <li><a href="#">메뉴 3</a></li>
+      <li><a href="#">돌봄</a></li>
+      <li><a href="#">체험</a></li>
+      <li><a href="#">의료</a></li>
     </ul>
   </nav>
 
   <div class="checklist">
-    <div class="category-cell" onclick="toggleItems('category1')">Category 1</div>
-    <ul id="category1">
-      <li class="item">Item 1</li>
-      <li class="item">Item 2</li>
-    </ul>
-    <div class="category-cell" onclick="toggleItems('category2')">Category 2</div>
-    <ul id="category2">
-      <li class="item">Item 3</li>
-      <li class="item">Item 4</li>
-    </ul>
-    <div class="category-cell" onclick="toggleItems('category3')">Category 3</div>
-    <ul id="category3">
-      <li class="item">Item 5</li>
-      <li class="item">Item 6</li>
-    </ul>
+    <div class="buttons">
+      <button id="button1">지역</button>
+      <button id="button2">서비스</button>
+      <button id="button3">연령</button>
+    </div>
+    <ul id="checklist-items" class="checklist-items">
+    </ul>  
   </div>
-  
-  
+
+  <div id="checked-items"></div>
 
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b69cf5fe637a0d27df71feafaa85d269&libraries=services"></script>
   <script src="0526script.js"></script>

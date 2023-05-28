@@ -37,7 +37,9 @@ nav ul {
 }
 
 nav ul li {
-  margin-left: 15vw;
+  margin-left: 20vw;
+  display: flex;
+  justify-content: space-between;
 }
 
 nav ul li:first-child {
@@ -96,56 +98,40 @@ nav ul li a {
     font-family: "Black Han Sans", sans-serif;
     font-size: 16px;
   }
-
-  .checklist {
-    position: static;
-    margin-top: 40px;
-    margin-right: auto;
-    margin-bottom: 20px;
-    margin-left: auto;
-    width: 90%;
-  }
 }
   /* Additional styling as per your requirements */
+/* Add this CSS code below the existing styles */
 
 .checklist {
   position: absolute;
-  top: 80px;
-  right: 20px;
-  z-index: 2;
-  width: 200px;
+  top: 90px;
   height: 60%;
-  max-height: 80vh;
-  background-color: #eaeaea;
-  border: 2px solid #333;
-  padding: 0;
-  overflow-y: auto; /* Add vertical scrollbar when content overflows */
-  display: flex;
-  flex-direction: row;
+  right: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  max-width: 300px;
 }
 
-.category-cell {
-  text-align: center;
-  padding: 0;
-  height: 20px;
-  margin: 0 auto;
-  border-collapse: collapse;
-  cursor: pointer;
-  font-size: 12px;
-  border-top: 2px solid #333; 
-  border-right: 2px solid #333;
-  border-left: 2px solid #333;
+@media (max-width: 1000px) {
+  .checklist {
+    position: static;
+    margin-top: 20px;
+  }
 }
 
 .checklist ul {
   list-style-type: none;
-  padding-top: 20px;
-  margin: 0;
+  padding: 0;
+  margin-top: 40px;
 }
 
 .checklist li {
-  padding-top: 10px;
-  margin-left: 20px;
-  display: none;
+  margin-bottom: 5px;
 }
 
+.checked {
+  font-weight: bold;
+}
