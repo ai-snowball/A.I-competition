@@ -81,11 +81,14 @@ nav ul li a {
   
   .mobile-nav ul {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    margin: 0 30vw;
+    justify-content: space-between;
   }
   
   .mobile-nav li {
-    margin: 10 10px;
+    flex-grow: 1;
+    margin: 0 10vw;
   }
   
   .mobile-nav li:first-child {
@@ -99,25 +102,24 @@ nav ul li a {
     font-size: 16px;
   }
 }
-  /* Additional styling as per your requirements */
-/* Add this CSS code below the existing styles */
 
 .checklist {
   position: absolute;
   top: 90px;
   height: 60%;
   right: 20px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.642);
   z-index: 1;
-  max-width: 300px;
+  max-width: 200px;
 }
 
 @media (max-width: 1000px) {
   .checklist {
-    position: static;
+    position: absolute;
+    top: 110px;
     margin-top: 20px;
   }
 }
@@ -125,10 +127,67 @@ nav ul li a {
 .checklist ul {
   list-style-type: none;
   padding: 0;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .checklist li {
-  margin-bottom: 5px;
+  margin-bottom: 100px; 
 }
 
+.checklist-items {
+  font-family: 'Black Han Sans', sans-serif;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  background-color: #90ffcd;
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 16px;
+  padding: 10px 10px;
+  margin: 0 5px;
+}
+
+.buttons button:hover {
+  background-color: #69e5b8;
+}
+
+.buttons button:focus {
+  outline: none;
+}
+
+/* 전체선택 전체해제 버튼 꾸미기 */
+.toggle-all-button {
+  background-color: #90ffcd;
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 16px;
+  padding: 5px 20px;
+  margin: 0 0;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-all-button:hover {
+  background-color: #69e5b8;
+}
+
+.toggle-all-button:focus {
+  outline: none;
+}
+/* 이거는 선택됐을 때 색깔 바꾸는 코드인데 
+왜 안되는건지 모르겠어서 일단 주석달아놓음
+.toggle-all-button:selected {
+  background-color: #f25c5c ;
+  color: #fff ;
+} */

@@ -3,6 +3,9 @@
 <head>
   <title>Ilike</title>
   <link rel="stylesheet" type="text/css" href="0526styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -11,9 +14,9 @@
     </div>
     <nav>
       <ul>
-        <li><a href="#">메뉴 1</a></li>
-        <li><a href="#">메뉴 2</a></li>
-        <li><a href="#">메뉴 3</a></li>
+        <li><a href="#">돌봄</a></li>
+        <li><a href="#">체험</a></li>
+        <li><a href="#">의료</a></li>
       </ul>
     </nav>
   </header>
@@ -31,14 +34,17 @@
   <div class="checklist">
     <div class="buttons">
       <button id="button1">지역</button>
-      <button id="button2">서비스</button>
+      <button id="button2">유형</button>
       <button id="button3">연령</button>
+    </div>
+    <div>
+      <button id="toggleAllButton" class="toggle-all-button">전체 해제</button>
     </div>
     <ul id="checklist-items" class="checklist-items">
     </ul>  
   </div>
 
-  <div id="checked-items"></div>
+  <div id="checked-items"></div> 
 
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b69cf5fe637a0d27df71feafaa85d269&libraries=services"></script>
   <script src="0526script.js"></script>
