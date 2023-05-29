@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ilike</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img
+          src="https://cdn.discordapp.com/attachments/579278879378767913/1111633074237747261/ilikeLogo.png"
+          alt="Logo"
+        />
+      </div>
+      <nav>
+        <ul>
+          <li id="CareMenu" onclick="changeMarker('Care')">
+            <span class="ico_comm ico_coffee"></span>
+            돌봄
+          </li>
+          <li id="PlayMenu" onclick="changeMarker('Play')">
+            <span class="ico_comm ico_store"></span>
+            체험
+          </li>
+          <li id="MedicalMenu" onclick="changeMarker('Medical')">
+            <span class="ico_comm ico_carpark"></span>
+            의료
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div id="map"></div>
+
+    <nav class="mobile-nav">
+      <ul>
+        <li id="CareMenu" onclick="changeMarker('Care')">
+          <span class="ico_comm ico_coffee"></span>
+          돌봄
+        </li>
+        <li id="PlayMenu" onclick="changeMarker('Play')">
+          <span class="ico_comm ico_store"></span>
+          체험
+        </li>
+        <li id="MedicalMenu" onclick="changeMarker('Medical')">
+          <span class="ico_comm ico_carpark"></span>
+          의료
+        </li>
+      </ul>
+    </nav>
+
+    <div class="checklist">
+      <div class="buttons">
+        <button id="button1">지역</button>
+        <button id="button2">유형</button>
+        <button id="button3">연령</button>
+      </div>
+      <div>
+        <button id="toggleAllButton" class="toggle-all-button">
+          전체 해제
+        </button>
+      </div>
+      <ul id="checklist-items" class="checklist-items"></ul>
+    </div>
+    <div id="checked-items"></div>
+
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b69cf5fe637a0d27df71feafaa85d269&libraries=services"></script>
+    <script src="script.js"></script>
+    <!-- Rest of your webpage content goes here -->
+  </body>
+</html>
