@@ -1,62 +1,89 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>아이가치</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Ilike</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header>
-      <div id="mapwrap">
-        <!-- 지도가 표시될 div -->
-        <div id="map" style="width: 100%; height: 350px"></div>
-        <!-- 지도 위에 표시될 마커 카테고리 -->
-        <div class="category">
-          <ul>
-            <li id="CareMenu" onclick="changeMarker('Care')">
-              <span class="ico_comm ico_coffee"></span>
-              돌봄
-            </li>
-            <li id="PlayMenu" onclick="changeMarker('Play')">
-              <span class="ico_comm ico_store"></span>
-              체험
-            </li>
-            <li id="MedicalMenu" onclick="changeMarker('Medical')">
-              <span class="ico_comm ico_carpark"></span>
-              의료
-            </li>
-          </ul>
-        </div>
+      <div class="logo">
+        <img
+          src="https://cdn.discordapp.com/attachments/579278879378767913/1111633074237747261/ilikeLogo.png"
+          alt="Logo"
+        />
       </div>
+      <nav>
+        <ul>
+          <li id="CareMenu" onclick="changeMarker('Care')">
+            <span class="ico_comm ico_coffee"></span>
+            돌봄
+          </li>
+          <li id="PlayMenu" onclick="changeMarker('Play')">
+            <span class="ico_comm ico_store"></span>
+            체험
+          </li>
+          <li id="MedicalMenu" onclick="changeMarker('Medical')">
+            <span class="ico_comm ico_carpark"></span>
+            의료
+          </li>
+        </ul>
+      </nav>
     </header>
 
-    <footer>
-      <button id="button1" onclick="buttonClicked(1)">버튼 1</button>
-      <button id="button2" onclick="buttonClicked(2)">버튼 2</button>
-      <button id="button3" onclick="buttonClicked(3)">버튼 3</button>
+    <div id="map"></div>
 
-      <input
-        type="checkbox"
-        id="checkbox1"
-        onchange="checkboxChanged('checkbox1')"
-      />
-      <label for="checkbox1">체크박스 1</label>
-      <br />
-      <input
-        type="checkbox"
-        id="checkbox2"
-        onchange="checkboxChanged('checkbox2')"
-      />
-      <label for="checkbox2">체크박스 2</label>
-      <br />
-      <input
-        type="checkbox"
-        id="checkbox3"
-        onchange="checkboxChanged('checkbox3')"
-      />
-      <label for="checkbox3">체크박스 3</label>
-    </footer>
-    <!-- <img id="myImage" src="logos1/공동육아나눔터마커.png" alt="기본 로고" /> -->
+    <nav class="mobile-nav">
+      <ul>
+        <li id="CareMenu" onclick="changeMarker('Care')">
+          <span class="ico_comm ico_coffee"></span>
+          돌봄
+        </li>
+        <li id="PlayMenu" onclick="changeMarker('Play')">
+          <span class="ico_comm ico_store"></span>
+          체험
+        </li>
+        <li id="MedicalMenu" onclick="changeMarker('Medical')">
+          <span class="ico_comm ico_carpark"></span>
+          의료
+        </li>
+      </ul>
+    </nav>
+
+    <div class="checklist">
+      <div class="buttons">
+        <button id="button1">지역</button>
+        <button id="button2">유형</button>
+        <button id="button3">연령</button>
+      </div>
+      <div>
+        <button id="toggleAllButton" class="toggle-all-button">
+          전체 해제
+        </button>
+      </div>
+      <ul id="checklist-items" class="checklist-items"></ul>
+    </div>
+    <div id="checked-items"></div>
+
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b69cf5fe637a0d27df71feafaa85d269&libraries=services"></script>
     <script src="script.js"></script>
+    <!-- Rest of your webpage content goes here -->
   </body>
 </html>
