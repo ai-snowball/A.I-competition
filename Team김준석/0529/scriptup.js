@@ -285,12 +285,9 @@ async function MakeAllMarkers() {
 
 // var markerimglocal = document.getElementById("myImage"); // 이미지 요소를 선택합니다.
 
-var markerImageSrc =
-  "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png"; // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-
-(CareMarkers = []), // 커피숍 마커 객체를 가지고 있을 배열입니다
-  (PlayMarkers = []), // 편의점 마커 객체를 가지고 있을 배열입니다
-  (MedicalMarkers = []); // 주차장 마커 객체를 가지고 있을 배열입니다
+var CareMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
+  PlayMarkers = [], // 편의점 마커 객체를 가지고 있을 배열입니다
+  MedicalMarkers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
 
 var CareMarkersState = [];
 var PlayMarkersState = [];
@@ -392,11 +389,14 @@ async function createCareDataMarkers() {
       };
 
     if (Care_seviceCLs[i] == "공동육아방") {
-      var markerImageaddress = "markerimages/공동육아방.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672010389168168/469722e4327e9694.png";
     } else if (Care_seviceCLs[i] == "공동육아나눔터") {
-      var markerImageaddress = "markerimages/공동육아나눔터.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672010141712424/6fca48fefaae3039.png";
     } else if (Care_seviceCLs[i] == "지역아동센터") {
-      var markerImageaddress = "markerimages/지역아동센터.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672069977653300/c856fc7b227a8242.png";
     }
 
     var markerImage = createMarkerImage(
@@ -441,13 +441,17 @@ function createPlayMarkers() {
       };
 
     if (Play_types[i] == "체험 시설") {
-      var markerImageaddress = "markerimages/체험 시설.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672070250274906/5108b472a770941b.png";
     } else if (Play_types[i] == "야외 시설") {
-      var markerImageaddress = "markerimages/야외 시설.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672068962631761/98382c0a9be057ae.png";
     } else if (Play_types[i] == "도서 시설") {
-      var markerImageaddress = "markerimages/도서 시설.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672011190280243/2eb5e67e1399f40c.png";
     } else if (Play_types[i] == "문화 행사") {
-      var markerImageaddress = "markerimages/문화 행사.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672011567771718/9c4d547fc54a5b6f.png";
     }
 
     // 마커이미지와 마커를 생성합니다
@@ -493,27 +497,38 @@ function createMedicalMarkers() {
       };
 
     if (Medical_TH[i] == "가정의학과") {
-      var markerImageaddress = "markerimages/가정의학과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672009915215912/6c97382ae76165c2.png";
     } else if (Medical_TH[i] == "내과") {
-      var markerImageaddress = "markerimages/내과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672010905075792/e59153ec6b93a865.png";
     } else if (Medical_TH[i] == "보건소") {
-      var markerImageaddress = "markerimages/보건소.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672011844591696/b55195d45a099e22.png";
     } else if (Medical_TH[i] == "소아과") {
-      var markerImageaddress = "markerimages/소아과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672012087865465/88bff098793fd6a0.png";
     } else if (Medical_TH[i] == "안과") {
-      var markerImageaddress = "markerimages/안과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672012381470760/079b82ff4b127257.png";
     } else if (Medical_TH[i] == "약국") {
-      var markerImageaddress = "markerimages/약국.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672069239447583/6acc6d09c87ef1a9.png";
     } else if (Medical_TH[i] == "이비인후과") {
-      var markerImageaddress = "markerimages/이비인후과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672069239447583/6acc6d09c87ef1a9.png";
     } else if (Medical_TH[i] == "치과") {
-      var markerImageaddress = "markerimages/치과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672070585831576/b4f006a2c9d8182d.png";
     } else if (Medical_TH[i] == "피부과") {
-      var markerImageaddress = "markerimages/피부과.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672070959112263/b4baeb25748835e7.png";
     } else if (Medical_TH[i] == "한의원") {
-      var markerImageaddress = "markerimages/한의원.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672071303053362/1495d65cab3c39df.png";
     } else {
-      var markerImageaddress = "markerimages/기타.png";
+      var markerImageaddress =
+        "https://cdn.discordapp.com/attachments/1111982831011369042/1112672010632441906/11c6de2f5cf519be.png";
     }
 
     // 마커이미지와 마커를 생성합니다
@@ -788,6 +803,7 @@ function showChecklistItems(items) {
 
   // Show the checklist items
   checklistItems.classList.add("active");
+  checklistItems.classList.add("scrollable");
 }
 
 function setCareMarkers(map, category, item) {
