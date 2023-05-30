@@ -10,8 +10,6 @@ var Care_urls = [
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1002/1/1000/",
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1004/1/1000/",
   "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1003/1/1000/",
-  // "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo10075/1/1000/", //지역보육 관공서, 관공서명을 부르는 태그네임이 다름
-  // "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/tbBabySisulBaseExt/1/1000/", //거점형야간보육어린이집정보, 좌표값이 없고 이름이나 서비스 종류 태그네임도 다름
 ];
 
 var Play_urls = [
@@ -61,13 +59,12 @@ var Medical_TH = [];
 
 async function loadXMLData(apiurl, type) {
   var url = apiurl;
-  console.log(url);
+
   const response = await fetch(url);
   const xmlString = await response.text();
   const parser = new DOMParser();
   const xmlData = parser.parseFromString(xmlString, "text/xml");
   if (type === "Care") {
-    console.log(type);
     if (
       apiurl ==
       "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo1003/1/1000/"
@@ -77,7 +74,6 @@ async function loadXMLData(apiurl, type) {
       processCareXMLData(xmlData, 1);
     }
   } else if (type === "Play") {
-    console.log(type);
     if (
       apiurl ==
         "http://openapi.seoul.go.kr:8088/596d54785a696d6a37324e42777371/xml/TnFcltySttusInfo2001/1/1000/" ||
@@ -110,12 +106,9 @@ async function loadXMLData(apiurl, type) {
       processPlayXMLData(xmlData, "도서 시설");
     }
   } else if (type === "Medical") {
-    console.log(type);
     processMedicalXMLData(xmlData);
   }
 }
-
-// var geocoder = new kakao.maps.services.Geocoder();
 
 function processCareXMLData(xmlData, urlcheck) {
   var xValueElements = xmlData.getElementsByTagName("X_CRDNT_VALUE");
@@ -289,11 +282,9 @@ async function MakeAllMarkers() {
   createMedicalMarkers();
 }
 
-// var markerimglocal = document.getElementById("myImage"); // 이미지 요소를 선택합니다.
-
-var CareMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
-  PlayMarkers = [], // 편의점 마커 객체를 가지고 있을 배열입니다
-  MedicalMarkers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+var CareMarkers = [], // 돌봄 마커 객체를 가지고 있을 배열입니다
+  PlayMarkers = [], // 체험 마커 객체를 가지고 있을 배열입니다
+  MedicalMarkers = []; // 의료 마커 객체를 가지고 있을 배열입니다
 
 var CareMarkersState = [];
 var PlayMarkersState = [];
@@ -334,7 +325,7 @@ function createMarker(position, image, name, content1, content2) {
   // 마커에 클릭이벤트를 등록합니다
   kakao.maps.event.addListener(marker, "click", function () {
     // 마커 위에 인포윈도우를 표시합니다
-    console.log("click");
+
     if (lastInfowindow) {
       lastInfowindow.close();
     }
@@ -374,7 +365,7 @@ function createMarker3(position, image, name, content1, content2, content3) {
   // 마커에 클릭이벤트를 등록합니다
   kakao.maps.event.addListener(marker, "click", function () {
     // 마커 위에 인포윈도우를 표시합니다
-    console.log("click");
+
     if (lastInfowindow) {
       lastInfowindow.close();
     }
@@ -425,7 +416,7 @@ async function createCareDataMarkers() {
   changeMarker("Care");
 }
 
-// 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
+// 돌봄 마커들의 지도 표시 여부를 설정하는 함수입니다
 function setAllCareMarkers(map) {
   for (var i = 0; i < CareMarkers.length; i++) {
     CareMarkers[i].setMap(map);
@@ -437,7 +428,7 @@ function setAllCareMarkers(map) {
   }
 }
 
-// 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
+// 체험 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
 function createPlayMarkers() {
   for (var i = 0; i < Play_positions.length; i++) {
     var imageSize = new kakao.maps.Size(36, 36),
@@ -493,7 +484,7 @@ function setAllPlayMarkers(map) {
   }
 }
 
-// 주차장 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
+// 의료 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
 function createMedicalMarkers() {
   for (var i = 0; i < Medical_positions.length; i++) {
     var imageSize = new kakao.maps.Size(36, 36),
@@ -557,7 +548,6 @@ function createMedicalMarkers() {
   }
 }
 
-// 주차장 마커들의 지도 표시 여부를 설정하는 함수입니다
 function setAllMedicalMarkers(map) {
   for (var i = 0; i < MedicalMarkers.length; i++) {
     MedicalMarkers[i].setMap(map);
@@ -577,9 +567,7 @@ function changeMarker(type) {
   var PlayMenu = document.getElementById("PlayMenu");
   var MedicalMenu = document.getElementById("MedicalMenu");
 
-  // 커피숍 카테고리가 클릭됐을 때
   if (type === "Care") {
-    // 커피숍 카테고리를 선택된 스타일로 변경하고
     if (lastInfowindow) {
       lastInfowindow.close();
     }
@@ -592,11 +580,9 @@ function changeMarker(type) {
     PlayMenu.className = "";
     MedicalMenu.className = "";
 
-    // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
     PlayMenu.className = "";
     MedicalMenu.className = "";
 
-    // 커피숍 마커들만 지도에 표시하도록 설정합니다
     setAllCareMarkers(map);
     setAllPlayMarkers(null);
     setAllMedicalMarkers(null);
@@ -604,18 +590,15 @@ function changeMarker(type) {
     if (lastInfowindow) {
       lastInfowindow.close();
     }
-    // 편의점 카테고리가 클릭됐을 때
 
     current_type = "Play";
     current_category = "지역";
     checkAllbox();
 
-    // 편의점 카테고리를 선택된 스타일로 변경하고
     CareMenu.className = "";
     PlayMenu.className = "menu_selected";
     MedicalMenu.className = "";
 
-    // 편의점 마커들만 지도에 표시하도록 설정합니다
     setAllCareMarkers(null);
     setAllPlayMarkers(map);
     setAllMedicalMarkers(null);
@@ -623,17 +606,14 @@ function changeMarker(type) {
     if (lastInfowindow) {
       lastInfowindow.close();
     }
-    // 주차장 카테고리가 클릭됐을 때
     current_type = "Medical";
     current_category = "지역";
     checkAllbox();
 
-    // 주차장 카테고리를 선택된 스타일로 변경하고
     CareMenu.className = "";
     PlayMenu.className = "";
     MedicalMenu.className = "menu_selected";
 
-    // 주차장 마커들만 지도에 표시하도록 설정합니다
     setAllCareMarkers(null);
     setAllPlayMarkers(null);
     setAllMedicalMarkers(map);
@@ -954,7 +934,7 @@ function setMedicalMarkers(map, category, item) {
 function addCheckedItem(item) {
   checkedItemsData.set(item, true);
   is_all_checked();
-  console.log(item + "check");
+
   if (current_type == "Care") {
     setCareMarkers(map, current_category, item);
   } else if (current_type == "Play") {
@@ -962,17 +942,12 @@ function addCheckedItem(item) {
   } else if (current_type == "Medical") {
     setMedicalMarkers(map, current_category, item);
   }
-
-  // const checkedItem = document.createElement("div");
-  // checkedItem.textContent = item;
-  // checkedItems.appendChild(checkedItem);
-  // 웹 밑에다가 글자 출력하는거
 }
 
 function removeCheckedItem(item) {
   checkedItemsData.delete(item);
   is_all_checked();
-  console.log(item + "uncheck");
+
   if (current_type == "Care") {
     setCareMarkers(null, current_category, item);
   } else if (current_type == "Play") {
@@ -980,12 +955,6 @@ function removeCheckedItem(item) {
   } else if (current_type == "Medical") {
     setMedicalMarkers(null, current_category, item);
   }
-
-  // const checkedItem = Array.from(checkedItems.children).find(itemElement => itemElement.textContent === item);
-  // if (checkedItem) {
-  //   checkedItems.removeChild(checkedItem);
-  // }
-  // 웹 밑에다가 글자 삭제하는거
 }
 
 // Function to check all checklist items

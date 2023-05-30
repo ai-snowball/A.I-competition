@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ilike</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>아이가치</title>
+
+    <link
+      href="{{ url_for('static', filename='styles.css') }}"
+      rel="stylesheet"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -80,10 +85,11 @@
       </div>
       <ul id="checklist-items" class="checklist-items"></ul>
     </div>
-    <div id="checked-items"></div>
 
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b69cf5fe637a0d27df71feafaa85d269&libraries=services"></script>
-    <script src="script.js"></script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
     <!-- Rest of your webpage content goes here -->
   </body>
 </html>
